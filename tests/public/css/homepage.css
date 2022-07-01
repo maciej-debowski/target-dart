@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+    box-sizing: border-box;
+}
+
+.target-root {
+    background: rgb(41, 46, 58);
+    color: #fff;
+    padding: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.target-root h1 {
+    font-size: 60px;
+}
+
+.target-root h2 {
+    font-size: 40px;
+}
+
+.cli-block {
+    width: 800px;
+    height: 500px;
+    background: #0004;
+    margin-top: 25px;
+    box-shadow: 0 0 8px 4px #111;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.cli-block .cli-button {
+    width: 50%;
+    height: 200px;
+    margin: 0;
+    border: 0;
+    outline: 0;
+    font-size: 40px;
+    cursor: pointer;
+    background: transparent;
+    color: #fff;
+    transition: .4s;
+}
+
+.cli-block .cli-button:hover, .cli-button.active {
+    background: #0004;
+    box-shadow: 0 0 8px 4px #111;
+}
+
+.cli-block .cli-terminal {
+    height: 100px;
+    background: #0004;
+    width: 100%;
+    box-shadow: 0 0 8px 4px #111;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    color: #ccc;
+}
+
+h3 {
+    margin-top: 15px;
+    width: 800px;
+    font-size: 22px;
+    text-align: left;
+}
+
+a {
+    color: #ddd;
+    text-decoration: none;
+}

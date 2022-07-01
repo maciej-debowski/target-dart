@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title><% config.title %></title>
+
+        <link rel="stylesheet" href="/_/css/homepage.css">
+    </head>
+    <body class="target-root">
+        <h1>Welcome to, 🎯 Target</h1>
+        <h2>Target is framework for creating websites in Dart!</h2>
+
+        <div class="cli-block">
+            <button data-command="target new controller name" class="cli-button active">Create Controller</button>
+            <button data-command="target new model name" class="cli-button">Create Model</button>
+            <button data-command="target new view name" class="cli-button">Create View</button>
+            <button data-command="target add name" class="cli-button">Add plugins</button>
+
+            <div class="cli-terminal">target new controller name</div>
+        </div>
+
+        <h3 id="time">
+            Since request to render website was: 
+        </h3>
+
+        <h3>
+            Author: Maciej Dębowski 
+            <a href="https://maciejdebowski.pl">Portfolio</a>
+            <a href="https://github.com/maciej-debowski">Github</a>.
+            Made with ❤️ and 🥤
+        </h3>
+
+        <script>window._startTime = "<% DateTime.now().millisecondsSinceEpoch %>";</script>
+        <script src="/_/js/homepage.js"></script>
+    </body>
+</html>

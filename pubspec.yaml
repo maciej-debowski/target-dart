@@ -1,0 +1,4 @@
+name: 'target'
+environment:
+  sdk: '>=2.10.0 <3.0.0'
+dependencies: {mime: ^1.0.2, path: ^1.8.2}

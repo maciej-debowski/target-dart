@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Target - 404</title>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                font-family: monospace;
+                box-sizing: border-box;
+            }
+
+            body {
+                padding: 25px;
+                background: #111;
+                color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                height: 100vh;
+            }
+
+            h1 {
+                font-size: 80px;
+                color: rgb(252, 50, 50);
+                text-shadow: 5px 5px rgb(133, 16, 16);
+            }
+
+            h2 {
+                font-size: 40px;
+                text-shadow: 3px 3px #ccc;
+            }
+
+            img {
+                position: absolute;
+                z-index: -1;
+                top: 50px;
+                left: 50px;
+            }
+
+            .logo-sub {
+                position: absolute;
+                top: 80px;
+                left: 200px;
+                font-size: 4rem;
+                color: rgb(252, 50, 50);
+                text-shadow: 5px 5px rgb(133, 16, 16);
+            }
+        </style>
+    </head>
+    <body>
+        <img alt src="/_/assets/target.png" class="target-logo">
+        <h3 class="logo-sub">
+            <% config.title.toUpperCase() %>
+        </h3>
+
+        <h1>404</h1>
+        <h2>Page not found!</h2>
+    </body>
+</html>

@@ -1,10 +1,13 @@
 import 'dart:io';
+import './type.dart';
+
 class TargetRoute {
   String method;
   String path;
-  String Function(HttpRequest request) callback;
+  Future<String> Function(HttpRequest request) callback;
+  ExtendedContentType type;
 
   bool isOriginal = true;
 
-  TargetRoute(this.method, this.path, this.callback) {}
+  TargetRoute(this.method, this.path, this.callback, this.type) {}
 }
