@@ -5,12 +5,15 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:path/path.dart';
 import 'package:mime/mime.dart';
+import 'package:colorize/colorize.dart';
 
 import './route.dart';
 import './file.dart';
 import './response.dart';
 import './type.dart';
 import './template.dart';
+import './dbhandler.dart';
+import './model.dart';
 
 class TargetServer {
     int port;
@@ -18,28 +21,35 @@ class TargetServer {
     String path;
     int get getPort => port;
     String get getIp => ip;
-    List<TargetRoute> routes = [ new TargetRoute("first", "", (HttpRequest request) async { return 'hello!'; }, new ExtendedContentType(ContentType.html, "")) ];
+    List<TargetRoute> routes = [ new TargetRoute("get", "", (HttpRequest request, TargetServer srv) async { return 'hello!'; }, new ExtendedContentType(ContentType.html, "")) ];
+    var tables = {};
     var config;
+    List<TargetModel> models;
 
     HttpServer server;
     HttpServer get getServer => server;
+    TargetDatabase db;
+
+    void Models(var models) {
+      this.models = models;
+
+      for(var model in models) {
+        this.tables[model.name] = model;
+      }
+    }
 
     void Config(var config) {
       this.config = config;
+      this.db = TargetDatabase();
+      this.db.Connect(config);
     }
 
     TargetServer(this.port, this.ip, this.path) {
         HttpServer.bind(this.ip, this.port).then((HttpServer server) { 
             this.server = server;
+            print("");
             server.listen((HttpRequest request) async {
                 TargetResponse response = await this.HandleRequest(request);
-
-                print(
-                  "[Incoming response for request]: \n (IP): " + request.connectionInfo.remoteAddress.address + 
-                  "\n (Mime Type): " + response.mime + 
-                  "\n (URL Path): " + request.uri.path + 
-                  "\n (Extended Type): " + response.type.extendedType + 
-                  "\n");
 
                 if(response.mime == '') { // No mime type
                   request.response.headers.contentType = response.type.contentType;
@@ -49,7 +59,7 @@ class TargetServer {
                     Target_THTML_File _file = Target_THTML_File(content, this);
                     await _file.Compile();
 
-                    await Future.delayed(Duration(milliseconds: 25)); // Need to do sth with it.
+                    await Future.delayed(Duration(milliseconds: 5)); // Need to do sth with it.
 
                     content = _file.GetContent();
                   }
@@ -62,19 +72,59 @@ class TargetServer {
                   else request.response.add(response.raw);
                 }
                 
-                
+                // EOR
                 request.response.close();
+
+                // Logging
+
+                var timespan = DateTime.now();
+                var path = request.uri.path;
+                var status = 200;
+                var method = request.method;
+                var ip = request.connectionInfo.remoteAddress.address;
+
+                Colorize _ts = new Colorize("$timespan");
+                Colorize _ip = new Colorize("$ip");
+                Colorize _me = new Colorize("$method");
+                Colorize _pa = new Colorize("$path");
+                Colorize _st = new Colorize("$status"); 
+
+                _ts.white();
+                _ts.bgMagenta();
+
+                _ip.bold();
+                _ip.lightRed();
+
+                _me.bgGreen();
+                _me.white();
+
+                _pa.lightCyan();
+
+                _st.green();
+
+                print("$_ts $_ip   $_me $_pa $_st");
             });
         });
     } 
 
-    void Run() {
-        print('Starting Target Server at: $ip:$port');
-        this.Running();
+    void Logger(String text) {
+      print('[Target]: $text');
+    }
+
+    void Run() async {
+      this.Logger('Starting Target Server at: $ip:$port');
+      this.Running();
+
+      this.Logger('Starting database models!');  
+      for(var model in this.models) {
+        model.Update(this.db, this.Logger, this.config);
+      }
+
+      this.Logger('Tip: to mix Laravel Mix (Vue SCSS etc) use npx mix watch command');
     }
 
     void Running() {
-        print('running...');
+      this.Logger('Running...');
     }
 
     Future<TargetResponse> HandleRequest(HttpRequest request) async {
@@ -102,16 +152,16 @@ class TargetServer {
         }
 
         TargetRoute findRoute() => this.routes.firstWhere(
-          (route) => route.path == path, 
+          (route) => route.path == path && route.method.toLowerCase() == request.method.toLowerCase(), 
           orElse: () => 
-            new TargetRoute("get", "/404", (HttpRequest request) async { 
+            new TargetRoute("get", "/404", (HttpRequest request, TargetServer srv) async { 
               return await TargetFile("/views/404.thtml", this.path).Content_Utf8(); 
             }, new ExtendedContentType(ContentType.html, "THTML")
           )
         );
 
         TargetRoute route = findRoute();
-        String response_content = await route.callback(request);
+        String response_content = await route.callback(request, this);
 
         TargetResponse response = TargetResponse(route.type, response_content, '', '');
 

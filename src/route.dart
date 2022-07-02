@@ -1,10 +1,11 @@
 import 'dart:io';
 import './type.dart';
+import './server.dart';
 
 class TargetRoute {
   String method;
   String path;
-  Future<String> Function(HttpRequest request) callback;
+  Future<String> Function(HttpRequest request, TargetServer srv) callback;
   ExtendedContentType type;
 
   bool isOriginal = true;

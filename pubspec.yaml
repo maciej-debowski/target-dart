@@ -1,4 +1,4 @@
 name: 'target'
 environment:
   sdk: '>=2.10.0 <3.0.0'
-dependencies: {mime: ^1.0.2, path: ^1.8.2}
+dependencies: {colorize: ^3.0.0, mime: ^1.0.2, mysql1: ^0.20.0, mysql_client: ^0.0.19, palestine_console: ^0.0.10, path: ^1.8.2}

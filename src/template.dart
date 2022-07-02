@@ -36,7 +36,6 @@ class Target_THTML_File {
 
         if(responses == splitted.length - 1) {
           this.completed = true;
-          print('yes');
         }
       });
 
